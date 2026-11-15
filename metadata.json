@@ -1,0 +1,6 @@
+{
+  "name": "ALÇA",
+  "description": "Rede social académica que conecta conversas, publicações, pesquisa, bolsas e estágios num ambiente sereno e dinâmico.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
