@@ -10,11 +10,13 @@ import {
   filterLibraryContent,
   filterUnifiedFeed,
   getRolePermissions,
+  resolveThemePreference,
   sendChatMessage,
   toggleArticleBookmark,
   togglePinPost,
   togglePostBookmark,
   togglePostLike,
+  toggleThemeMode,
   validateLoginCredentials,
   validateSignupCredentials,
 } from './alcaLogic';
@@ -238,4 +240,13 @@ test('togglePostLike, addPostComment, bookmarks, applications, and chat stay syn
   );
   assert.equal(stats.applicationsCount >= 1, true);
   assert.equal(stats.savedCount >= 2, true);
+});
+
+test('resolveThemePreference and toggleThemeMode handle stored and system theme modes', () => {
+  assert.equal(resolveThemePreference('dark', false), 'dark');
+  assert.equal(resolveThemePreference('light', true), 'light');
+  assert.equal(resolveThemePreference(null, true), 'dark');
+  assert.equal(resolveThemePreference(undefined, false), 'light');
+  assert.equal(toggleThemeMode('light'), 'dark');
+  assert.equal(toggleThemeMode('dark'), 'light');
 });

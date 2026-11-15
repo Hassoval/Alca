@@ -23,7 +23,7 @@ export function AlcaLoader({
         <motion.div
           animate={{ scale: [0.92, 1.08, 0.92], opacity: [0.45, 0.85, 0.45] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-indigo-400/30 via-sky-300/25 to-violet-400/30 blur-md"
+          className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-indigo-400/30 via-sky-300/25 to-violet-400/30 dark:from-indigo-500/35 dark:via-sky-400/25 dark:to-violet-500/35 blur-md"
           aria-hidden="true"
         />
 
@@ -37,11 +37,11 @@ export function AlcaLoader({
           >
             <path
               d="M20 5L7.5 33H13.5L20 17.5L26.5 33H32.5L20 5Z"
-              fill="#0A0F44"
+              className="fill-[#0A0F44] dark:fill-white transition-colors duration-300"
             />
             <motion.path
               d="M12.5 26.5C15.5 23.2 24.5 23.2 27.5 26.5"
-              stroke="#4F46E5"
+              stroke="#6366F1"
               strokeWidth="3.2"
               strokeLinecap="round"
               animate={{ pathLength: [0.35, 1, 0.35], opacity: [0.6, 1, 0.6] }}
@@ -51,7 +51,7 @@ export function AlcaLoader({
               cx="20"
               cy="11.5"
               r="2.4"
-              fill="#4F46E5"
+              fill="#6366F1"
               animate={{ scale: [0.85, 1.2, 0.85] }}
               transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
             />
@@ -60,10 +60,10 @@ export function AlcaLoader({
       </div>
 
       <div className="text-center space-y-2 max-w-xs">
-        <p className="text-xs font-display font-semibold text-indigo-950">
+        <p className="text-xs font-display font-semibold text-indigo-950 dark:text-indigo-100">
           {label}
         </p>
-        <div className="w-40 h-1.5 rounded-full bg-indigo-100/80 overflow-hidden mx-auto">
+        <div className="w-40 h-1.5 rounded-full bg-indigo-100/80 dark:bg-slate-800 overflow-hidden mx-auto">
           <motion.div
             animate={{ x: ['-100%', '100%'] }}
             transition={{ duration: 1.35, repeat: Infinity, ease: [0.16, 1, 0.3, 1] }}

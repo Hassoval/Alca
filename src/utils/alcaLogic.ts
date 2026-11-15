@@ -14,6 +14,22 @@ import type {
   UserProfile,
 } from '../types/alca';
 
+export type ThemeMode = 'light' | 'dark';
+
+export function resolveThemePreference(
+  stored: string | null | undefined,
+  prefersDark = false,
+): ThemeMode {
+  if (stored === 'dark' || stored === 'light') {
+    return stored;
+  }
+  return prefersDark ? 'dark' : 'light';
+}
+
+export function toggleThemeMode(current: ThemeMode): ThemeMode {
+  return current === 'dark' ? 'light' : 'dark';
+}
+
 export interface AuthValidationResult {
   valid: boolean;
   error?: string;

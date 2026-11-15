@@ -45,13 +45,13 @@ export function StoriesStrip({
         className="glass-surface rounded-3xl px-4 py-4"
       >
         <div className="flex items-center justify-between mb-3 px-1">
-          <h2 className="text-sm font-display font-semibold text-slate-900">
+          <h2 className="text-sm font-display font-semibold text-slate-900 dark:text-slate-100">
             Stories
           </h2>
           <button
             type="button"
             onClick={() => setShowCreateModal(true)}
-            className="text-xs font-medium text-indigo-700 hover:text-indigo-900 py-1 px-2 rounded-lg hover:bg-indigo-50 transition-colors whitespace-nowrap"
+            className="text-xs font-medium text-indigo-700 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-indigo-200 py-1 px-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/15 transition-colors whitespace-nowrap"
           >
             Partilhar momento
           </button>
@@ -69,11 +69,11 @@ export function StoriesStrip({
               <div
                 className={`relative p-[2.5px] rounded-full transition-transform duration-200 group-hover:scale-[1.04] ${
                   story.viewed
-                    ? 'bg-slate-200'
+                    ? 'bg-slate-200 dark:bg-slate-700'
                     : `bg-gradient-to-tr ${story.ringAccent}`
                 }`}
               >
-                <div className="bg-white p-[2px] rounded-full">
+                <div className="bg-white dark:bg-slate-900 p-[2px] rounded-full transition-colors duration-300">
                   <UserAvatar
                     name={story.authorName}
                     initials={story.initials}
@@ -84,13 +84,13 @@ export function StoriesStrip({
                 {story.isOwn && (
                   <span
                     aria-hidden="true"
-                    className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#0A0F44] text-white flex items-center justify-center border-2 border-white shadow-sm"
+                    className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#0A0F44] dark:bg-indigo-500 text-white flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-sm"
                   >
                     <Plus className="w-3 h-3" />
                   </span>
                 )}
               </div>
-              <span className="text-xs font-medium text-slate-700 max-w-[68px] truncate">
+              <span className="text-xs font-medium text-slate-700 dark:text-slate-300 max-w-[68px] truncate">
                 {story.shortName}
               </span>
             </button>
@@ -196,14 +196,14 @@ export function StoriesStrip({
               className="w-full max-w-md glass-popover rounded-3xl p-6 space-y-4"
             >
               <div className="flex items-center justify-between">
-                <h3 className="text-base font-display font-semibold text-slate-900">
+                <h3 className="text-base font-display font-semibold text-slate-900 dark:text-slate-100">
                   Novo Story Académico
                 </h3>
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
                   aria-label="Cancelar novo story"
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -212,7 +212,7 @@ export function StoriesStrip({
               <div>
                 <label
                   htmlFor="story-subject"
-                  className="block text-xs font-medium text-slate-600 mb-1.5"
+                  className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
                 >
                   Tema ou disciplina
                 </label>
@@ -221,14 +221,14 @@ export function StoriesStrip({
                   type="text"
                   value={newSubject}
                   onChange={(e) => setNewSubject(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-indigo-500"
+                  className="w-full h-11 px-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="story-caption"
-                  className="block text-xs font-medium text-slate-600 mb-1.5"
+                  className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
                 >
                   O que estás a estudar agora?
                 </label>
@@ -238,13 +238,13 @@ export function StoriesStrip({
                   value={newCaption}
                   onChange={(e) => setNewCaption(e.target.value)}
                   placeholder="Ex: A rever protocolos TCP/UDP para a frequência..."
-                  className="w-full p-3.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-indigo-500 resize-none"
+                  className="w-full p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 resize-none"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full h-11 rounded-xl bg-[#0A0F44] hover:bg-[#141B66] text-white text-sm font-semibold flex items-center justify-center gap-2 transition-colors"
+                className="w-full h-11 rounded-xl bg-[#0A0F44] hover:bg-[#141B66] dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white text-sm font-semibold flex items-center justify-center gap-2 transition-colors"
               >
                 <Send className="w-4 h-4" aria-hidden="true" />
                 <span>Publicar Story</span>

@@ -39,12 +39,15 @@ import {
   dismissNotification,
   markStoryViewed,
   markThreadRead,
+  resolveThemePreference,
   sendChatMessage,
   toggleArticleBookmark,
   toggleOpportunityBookmark,
   togglePinPost,
   togglePostBookmark,
   togglePostLike,
+  toggleThemeMode,
+  type ThemeMode,
 } from './utils/alcaLogic';
 import { AuthScreen } from './components/AuthScreen';
 import { SkeletonShimmer } from './components/SkeletonShimmer';
@@ -55,6 +58,7 @@ import { ProfileView } from './components/ProfileView';
 import { DesktopLeftRail, DesktopRightRail } from './components/DesktopRails';
 
 const STORAGE_KEY = 'alca_academic_state_v2';
+const THEME_STORAGE_KEY = 'alca_theme_v1';
 
 const TAB_ORDER: Record<AppTab, number> = {
   inicio: 0,
@@ -108,8 +112,21 @@ function loadInitialState(): PersistedState {
   };
 }
 
+function loadInitialTheme(): ThemeMode {
+  if (typeof window === 'undefined') return 'light';
+  try {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    const resolved = resolveThemePreference(stored, false);
+    document.documentElement.classList.toggle('dark', resolved === 'dark');
+    return resolved;
+  } catch {
+    return 'light';
+  }
+}
+
 export default function App() {
   const [state, setState] = useState<PersistedState>(loadInitialState);
+  const [theme, setTheme] = useState<ThemeMode>(loadInitialTheme);
   const [activeTab, setActiveTab] = useState<AppTab>('inicio');
   const [navDirection, setNavDirection] = useState<number>(1);
   const [isLoadingView, setIsLoadingView] = useState(false);
@@ -121,6 +138,19 @@ export default function App() {
   const [activeThreadId, setActiveThreadId] = useState<string>(
     INITIAL_THREADS[0].id,
   );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // Ignore storage quota errors
+    }
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme((prev) => toggleThemeMode(prev));
+  };
 
   useEffect(() => {
     try {
@@ -285,18 +315,24 @@ export default function App() {
   );
 
   if (!state.isAuthenticated) {
-    return <AuthScreen onAuthenticated={handleAuthenticated} />;
+    return (
+      <AuthScreen
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
+        onAuthenticated={handleAuthenticated}
+      />
+    );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F7FD] text-slate-900 relative">
+    <div className="min-h-screen bg-[#F5F7FD] dark:bg-[#0B1021] text-slate-900 dark:text-slate-100 relative transition-colors duration-300">
       {/* Subtle soothing ambient glow */}
       <div
-        className="pointer-events-none fixed top-0 left-1/4 w-[32rem] h-[32rem] rounded-full bg-indigo-200/35 blur-3xl -z-0"
+        className="pointer-events-none fixed top-0 left-1/4 w-[32rem] h-[32rem] rounded-full bg-indigo-200/35 dark:bg-indigo-600/20 blur-3xl -z-0 transition-colors duration-300"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none fixed bottom-0 right-1/5 w-[28rem] h-[28rem] rounded-full bg-sky-200/35 blur-3xl -z-0"
+        className="pointer-events-none fixed bottom-0 right-1/5 w-[28rem] h-[28rem] rounded-full bg-sky-200/35 dark:bg-sky-600/15 blur-3xl -z-0 transition-colors duration-300"
         aria-hidden="true"
       />
 
@@ -307,6 +343,8 @@ export default function App() {
             activeTab={activeTab}
             unreadMessages={stats.unreadMessages}
             user={state.user}
+            theme={theme}
+            onToggleTheme={handleToggleTheme}
             onChangeTab={handleTabChange}
           />
 
@@ -332,6 +370,8 @@ export default function App() {
                       opportunities={state.opportunities}
                       notifications={state.notifications}
                       hasMoreItems={!state.extraLoaded}
+                      theme={theme}
+                      onToggleTheme={handleToggleTheme}
                       onLoadMore={handleLoadMoreFeed}
                       onOpenSearch={(q) => handleOpenSearch(q ?? '', 'Tudo')}
                       onOpenOpportunities={() =>
@@ -487,6 +527,8 @@ export default function App() {
                       posts={state.posts}
                       articles={state.articles}
                       opportunities={state.opportunities}
+                      theme={theme}
+                      onToggleTheme={handleToggleTheme}
                       onLogout={handleLogout}
                       onOpenLibrary={() => handleOpenSearch('', 'Bolsas')}
                       onSwitchAccount={handleSwitchAccount}
@@ -514,7 +556,7 @@ export default function App() {
       {/* Fixed Bottom 4-Tab Glass Navigation on Mobile */}
       <nav
         aria-label="Navegação inferior"
-        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-nav border-t border-slate-200/80"
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-nav border-t border-slate-200/80 dark:border-slate-800/80"
       >
         <div className="max-w-lg mx-auto grid grid-cols-4 h-16 items-center px-2">
           {[
@@ -538,8 +580,8 @@ export default function App() {
                 aria-current={active ? 'page' : undefined}
                 className={`relative min-h-[48px] flex flex-col items-center justify-center gap-1 rounded-2xl transition-colors ${
                   active
-                    ? 'text-[#0A0F44] font-semibold'
-                    : 'text-slate-500 hover:text-slate-900'
+                    ? 'text-[#0A0F44] dark:text-indigo-300 font-semibold'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
                 }`}
               >
                 <div className="relative">
@@ -549,7 +591,7 @@ export default function App() {
                     aria-hidden="true"
                   />
                   {item.badge && item.badge > 0 ? (
-                    <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-indigo-600 text-white text-[10px] font-bold flex items-center justify-center tabular-nums">
+                    <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white text-[10px] font-bold flex items-center justify-center tabular-nums">
                       {item.badge}
                     </span>
                   ) : null}

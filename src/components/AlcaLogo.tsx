@@ -1,9 +1,9 @@
 interface AlcaLogoProps {
-  tone?: 'light' | 'dark';
+  tone?: 'light' | 'dark' | 'auto';
   size?: 'sm' | 'md' | 'lg';
 }
 
-export function AlcaLogo({ tone = 'dark', size = 'md' }: AlcaLogoProps) {
+export function AlcaLogo({ tone = 'auto', size = 'md' }: AlcaLogoProps) {
   const iconDimensions =
     size === 'lg' ? 'w-11 h-11' : size === 'sm' ? 'w-7 h-7' : 'w-8 h-8';
   const textClass =
@@ -13,8 +13,22 @@ export function AlcaLogo({ tone = 'dark', size = 'md' }: AlcaLogoProps) {
         ? 'text-sm tracking-tight'
         : 'text-base tracking-tight';
 
-  const primaryStroke = tone === 'light' ? '#FFFFFF' : '#0F172A';
-  const accentFill = tone === 'light' ? '#A5B4FC' : '#4F46E5';
+  const primaryClass =
+    tone === 'light'
+      ? 'fill-white'
+      : tone === 'dark'
+        ? 'fill-slate-900 dark:fill-white'
+        : 'fill-slate-900 dark:fill-white';
+
+  const accentStrokeClass =
+    tone === 'light'
+      ? 'stroke-indigo-300'
+      : 'stroke-indigo-600 dark:stroke-indigo-400';
+
+  const accentFillClass =
+    tone === 'light'
+      ? 'fill-indigo-300'
+      : 'fill-indigo-600 dark:fill-indigo-400';
 
   return (
     <div className="inline-flex items-center gap-2 select-none shrink-0">
@@ -27,19 +41,24 @@ export function AlcaLogo({ tone = 'dark', size = 'md' }: AlcaLogoProps) {
       >
         <path
           d="M20 5L7.5 33H13.5L20 17.5L26.5 33H32.5L20 5Z"
-          fill={primaryStroke}
+          className={`${primaryClass} transition-colors duration-300`}
         />
         <path
           d="M12.5 26.5C15.5 23.2 24.5 23.2 27.5 26.5"
-          stroke={accentFill}
+          className={`${accentStrokeClass} transition-colors duration-300`}
           strokeWidth="3.2"
           strokeLinecap="round"
         />
-        <circle cx="20" cy="11.5" r="2.2" fill={accentFill} />
+        <circle
+          cx="20"
+          cy="11.5"
+          r="2.2"
+          className={`${accentFillClass} transition-colors duration-300`}
+        />
       </svg>
       <span
-        className={`font-display font-extrabold whitespace-nowrap ${textClass} ${
-          tone === 'light' ? 'text-white' : 'text-slate-900'
+        className={`font-display font-extrabold whitespace-nowrap transition-colors duration-300 ${textClass} ${
+          tone === 'light' ? 'text-white' : 'text-slate-900 dark:text-white'
         }`}
       >
         ALÇA

@@ -86,10 +86,12 @@ export function LibrarySearchView({
       );
     }
     const toneClasses = {
-      indigo: 'from-indigo-100 to-slate-100 text-indigo-700',
-      sky: 'from-sky-100 to-indigo-50 text-sky-700',
-      teal: 'from-teal-100 to-emerald-50 text-teal-700',
-      violet: 'from-violet-100 to-indigo-50 text-violet-700',
+      indigo:
+        'from-indigo-100 to-slate-100 dark:from-indigo-950 dark:to-slate-900 text-indigo-700 dark:text-indigo-300',
+      sky: 'from-sky-100 to-indigo-50 dark:from-sky-950 dark:to-indigo-950 text-sky-700 dark:text-sky-300',
+      teal: 'from-teal-100 to-emerald-50 dark:from-teal-950 dark:to-emerald-950 text-teal-700 dark:text-teal-300',
+      violet:
+        'from-violet-100 to-indigo-50 dark:from-violet-950 dark:to-indigo-950 text-violet-700 dark:text-violet-300',
     };
     const Icon =
       article.id.includes('wifi')
@@ -104,7 +106,7 @@ export function LibrarySearchView({
 
     return (
       <div
-        className={`w-full h-full bg-gradient-to-br ${toneClasses[article.thumbTone]} flex items-center justify-center`}
+        className={`w-full h-full bg-gradient-to-br ${toneClasses[article.thumbTone]} flex items-center justify-center transition-colors duration-300`}
       >
         <Icon className="w-6 h-6" aria-hidden="true" />
       </div>
@@ -121,16 +123,16 @@ export function LibrarySearchView({
               type="button"
               onClick={onBackToFeed}
               aria-label="Voltar ao Início"
-              className="min-w-[44px] min-h-[44px] -ml-1.5 rounded-full flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors"
+              className="min-w-[44px] min-h-[44px] -ml-1.5 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
-            <h1 className="font-display font-bold text-lg text-slate-900">
+            <h1 className="font-display font-bold text-lg text-slate-900 dark:text-slate-100">
               Pesquisar
             </h1>
           </div>
           <div className="lg:hidden">
-            <AlcaLogo tone="dark" size="sm" />
+            <AlcaLogo tone="auto" size="sm" />
           </div>
         </div>
 
@@ -138,7 +140,7 @@ export function LibrarySearchView({
         <div className="relative flex items-center gap-2">
           <div className="relative flex-1">
             <Search
-              className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"
+              className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"
               aria-hidden="true"
             />
             <label htmlFor="library-search-input" className="sr-only">
@@ -150,14 +152,14 @@ export function LibrarySearchView({
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               placeholder="Redes de Computadores, IP, Bolsas..."
-              className="w-full h-12 pl-10 pr-10 rounded-2xl border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all"
+              className="w-full h-12 pl-10 pr-10 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all duration-300"
             />
             {query && (
               <button
                 type="button"
                 onClick={() => onQueryChange('')}
                 aria-label="Limpar pesquisa"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 min-w-[36px] min-h-[36px] rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 min-w-[36px] min-h-[36px] rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -169,10 +171,10 @@ export function LibrarySearchView({
             onClick={() => setFilterOpen((prev) => !prev)}
             aria-label="Abrir filtros de pesquisa"
             aria-expanded={filterOpen}
-            className={`min-w-[48px] h-12 rounded-2xl border flex items-center justify-center transition-colors ${
+            className={`min-w-[48px] h-12 rounded-2xl border flex items-center justify-center transition-colors duration-300 ${
               filterOpen || activeCategory !== 'Tudo' || onlySaved
-                ? 'bg-[#0A0F44] text-white border-[#0A0F44]'
-                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                ? 'bg-[#0A0F44] dark:bg-indigo-500 text-white border-[#0A0F44] dark:border-indigo-500'
+                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
             }`}
           >
             <Filter className="w-4 h-4" />
@@ -191,14 +193,14 @@ export function LibrarySearchView({
                 aria-label="Filtros da biblioteca"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-display font-semibold text-slate-900">
+                  <span className="text-xs font-display font-semibold text-slate-900 dark:text-slate-100">
                     Filtrar por área ou oportunidade
                   </span>
                   <button
                     type="button"
                     onClick={() => setFilterOpen(false)}
                     aria-label="Fechar painel de filtros"
-                    className="min-w-[32px] min-h-[32px] rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                    className="min-w-[32px] min-h-[32px] rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -215,8 +217,8 @@ export function LibrarySearchView({
                       }}
                       className={`min-h-[40px] px-3 rounded-xl text-xs font-medium text-left transition-colors ${
                         activeCategory === cat
-                          ? 'bg-indigo-600 text-white'
-                          : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200/70'
+                          ? 'bg-indigo-600 dark:bg-indigo-500 text-white'
+                          : 'bg-slate-100/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-700'
                       }`}
                     >
                       {cat}
@@ -224,15 +226,15 @@ export function LibrarySearchView({
                   ))}
                 </div>
 
-                <div className="pt-2 border-t border-slate-200/70 flex items-center justify-between">
+                <div className="pt-2 border-t border-slate-200/70 dark:border-slate-700/70 flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setOnlySaved((prev) => !prev)}
                     aria-pressed={onlySaved}
                     className={`min-h-[40px] px-3 rounded-xl text-xs font-medium flex items-center gap-2 transition-colors ${
                       onlySaved
-                        ? 'bg-indigo-50 text-indigo-800 border border-indigo-200'
-                        : 'text-slate-600 hover:bg-slate-100'
+                        ? 'bg-indigo-50 dark:bg-indigo-500/20 text-indigo-800 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-500/40'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >
                     <Bookmark className="w-3.5 h-3.5" />
@@ -247,7 +249,7 @@ export function LibrarySearchView({
                       onQueryChange('');
                       setFilterOpen(false);
                     }}
-                    className="text-xs font-medium text-slate-500 hover:text-slate-900 px-2 py-1"
+                    className="text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 px-2 py-1"
                   >
                     Limpar
                   </button>
@@ -266,8 +268,8 @@ export function LibrarySearchView({
               onClick={() => onCategoryChange(cat)}
               className={`min-h-[38px] px-3.5 rounded-xl text-xs font-medium whitespace-nowrap shrink-0 transition-colors ${
                 activeCategory === cat
-                  ? 'bg-[#0A0F44] text-white'
-                  : 'bg-slate-100/80 text-slate-600 hover:bg-slate-200/70 hover:text-slate-900'
+                  ? 'bg-[#0A0F44] dark:bg-indigo-500 text-white'
+                  : 'bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {cat}
@@ -294,15 +296,15 @@ export function LibrarySearchView({
       {filteredArticles.length > 0 && (
         <section className="glass-surface rounded-3xl p-4 sm:p-5 space-y-3">
           <div className="flex items-baseline justify-between px-1">
-            <h2 className="font-display font-bold text-base text-slate-900">
+            <h2 className="font-display font-bold text-base text-slate-900 dark:text-slate-100">
               Destaques
             </h2>
-            <span className="text-xs text-slate-500 tabular-nums">
+            <span className="text-xs text-slate-500 dark:text-slate-400 tabular-nums">
               {filteredArticles.length} conteúdos
             </span>
           </div>
 
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {filteredArticles.map((article) => (
               <div
                 key={article.id}
@@ -311,19 +313,19 @@ export function LibrarySearchView({
                 <button
                   type="button"
                   onClick={() => setSelectedArticle(article)}
-                  className="flex-1 min-w-0 flex items-start gap-3.5 text-left rounded-2xl p-1 -m-1 hover:bg-indigo-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                  className="flex-1 min-w-0 flex items-start gap-3.5 text-left rounded-2xl p-1 -m-1 hover:bg-indigo-50/40 dark:hover:bg-indigo-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 >
-                  <div className="w-16 h-16 sm:w-20 sm:h-16 rounded-2xl overflow-hidden shrink-0 border border-slate-200/70 bg-slate-50">
+                  <div className="w-16 h-16 sm:w-20 sm:h-16 rounded-2xl overflow-hidden shrink-0 border border-slate-200/70 dark:border-slate-700/70 bg-slate-50 dark:bg-slate-800">
                     {getToneVisual(article)}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-display font-semibold text-sm text-slate-900 group-hover:text-indigo-800 transition-colors">
+                    <h3 className="font-display font-semibold text-sm text-slate-900 dark:text-slate-100 group-hover:text-indigo-800 dark:group-hover:text-indigo-300 transition-colors">
                       {article.title}
                     </h3>
-                    <p className="text-xs text-slate-600 mt-1 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 line-clamp-2 leading-relaxed">
                       {article.snippet}
                     </p>
-                    <p className="text-[11px] text-slate-400 mt-1.5">
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1.5">
                       {article.category} · {article.readTime} · {article.author}
                     </p>
                   </div>
@@ -340,8 +342,8 @@ export function LibrarySearchView({
                   aria-pressed={article.bookmarked}
                   className={`min-w-[44px] min-h-[44px] rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                     article.bookmarked
-                      ? 'text-indigo-700 bg-indigo-50'
-                      : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
+                      ? 'text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-500/20'
+                      : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   <Bookmark
@@ -359,10 +361,10 @@ export function LibrarySearchView({
       {filteredOpportunities.length > 0 && (
         <section className="glass-surface rounded-3xl p-4 sm:p-5 space-y-3.5">
           <div className="flex items-baseline justify-between px-1">
-            <h2 className="font-display font-bold text-base text-slate-900">
+            <h2 className="font-display font-bold text-base text-slate-900 dark:text-slate-100">
               Bolsas & Estágios
             </h2>
-            <span className="text-xs text-slate-500 tabular-nums">
+            <span className="text-xs text-slate-500 dark:text-slate-400 tabular-nums">
               {filteredOpportunities.length} oportunidades
             </span>
           </div>
@@ -371,15 +373,15 @@ export function LibrarySearchView({
             {filteredOpportunities.map((opp) => (
               <div
                 key={opp.id}
-                className="rounded-2xl border border-slate-200/80 bg-white/85 p-4 flex flex-col justify-between gap-3 hover:border-indigo-300/80 transition-colors"
+                className="rounded-2xl border border-slate-200/80 dark:border-slate-700/70 bg-white/85 dark:bg-slate-800/65 p-4 flex flex-col justify-between gap-3 hover:border-indigo-300/80 dark:hover:border-indigo-500/40 transition-colors duration-300"
               >
                 <div className="space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="text-[11px] font-medium text-indigo-700">
+                      <p className="text-[11px] font-medium text-indigo-700 dark:text-indigo-300">
                         {opp.type} · Prazo {opp.deadline}
                       </p>
-                      <h3 className="font-display font-semibold text-sm text-slate-900 mt-0.5">
+                      <h3 className="font-display font-semibold text-sm text-slate-900 dark:text-slate-100 mt-0.5">
                         {opp.title}
                       </h3>
                     </div>
@@ -395,8 +397,8 @@ export function LibrarySearchView({
                       aria-pressed={opp.bookmarked}
                       className={`min-w-[40px] min-h-[40px] -mt-1 -mr-1 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                         opp.bookmarked
-                          ? 'text-indigo-700 bg-indigo-50'
-                          : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
+                          ? 'text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-500/20'
+                          : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
                       }`}
                     >
                       <Bookmark
@@ -406,19 +408,19 @@ export function LibrarySearchView({
                     </button>
                   </div>
 
-                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
                     {opp.description}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     {opp.organization} · {opp.modality}
                   </p>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-700/70 flex items-center justify-between gap-2">
                   <button
                     type="button"
                     onClick={() => setSelectedOpportunity(opp)}
-                    className="min-h-[40px] px-3 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+                    className="min-h-[40px] px-3 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/70 transition-colors"
                   >
                     Ver requisitos
                   </button>
@@ -429,8 +431,8 @@ export function LibrarySearchView({
                     disabled={opp.applied}
                     className={`min-h-[40px] px-3.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap ${
                       opp.applied
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                        : 'bg-[#0A0F44] hover:bg-[#141B66] text-white'
+                        ? 'bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30'
+                        : 'bg-[#0A0F44] dark:bg-indigo-500 hover:bg-[#141B66] dark:hover:bg-indigo-400 text-white'
                     }`}
                   >
                     {opp.applied ? (
@@ -455,10 +457,10 @@ export function LibrarySearchView({
       {/* Empty State */}
       {filteredArticles.length === 0 && filteredOpportunities.length === 0 && (
         <div className="glass-surface rounded-3xl p-8 text-center space-y-3">
-          <p className="font-display font-semibold text-base text-slate-900">
+          <p className="font-display font-semibold text-base text-slate-900 dark:text-slate-100">
             Nenhum conteúdo encontrado para esta pesquisa
           </p>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Experimenta limpar os filtros ou pesquisar por termos como IP, DNS,
             Wi-Fi ou Bolsa.
           </p>
@@ -469,7 +471,7 @@ export function LibrarySearchView({
               onCategoryChange('Tudo');
               setOnlySaved(false);
             }}
-            className="h-11 px-5 rounded-xl bg-[#0A0F44] text-white text-xs font-semibold hover:bg-[#141B66] transition-colors"
+            className="h-11 px-5 rounded-xl bg-[#0A0F44] dark:bg-indigo-500 text-white text-xs font-semibold hover:bg-[#141B66] dark:hover:bg-indigo-400 transition-colors"
           >
             Mostrar todos os destaques
           </button>
@@ -497,13 +499,13 @@ export function LibrarySearchView({
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-xs font-medium text-indigo-700">
+                  <p className="text-xs font-medium text-indigo-700 dark:text-indigo-300">
                     {selectedArticle.category} · {selectedArticle.readTime}
                   </p>
-                  <h2 className="font-display font-bold text-xl text-slate-900 mt-1">
+                  <h2 className="font-display font-bold text-xl text-slate-900 dark:text-slate-100 mt-1">
                     {selectedArticle.title}
                   </h2>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                     Por {selectedArticle.author}
                   </p>
                 </div>
@@ -511,23 +513,23 @@ export function LibrarySearchView({
                   type="button"
                   onClick={() => setSelectedArticle(null)}
                   aria-label="Fechar artigo"
-                  className="min-w-[44px] min-h-[44px] -mr-2 -mt-2 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100"
+                  className="min-w-[44px] min-h-[44px] -mr-2 -mt-2 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="space-y-3 text-sm leading-relaxed text-slate-700">
+              <div className="space-y-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                 {selectedArticle.fullSummary.map((para, index) => (
                   <p key={index}>{para}</p>
                 ))}
               </div>
 
-              <div className="rounded-2xl bg-indigo-50/80 border border-indigo-100 p-4">
-                <p className="text-xs font-semibold text-indigo-900">
+              <div className="rounded-2xl bg-indigo-50/80 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-500/30 p-4">
+                <p className="text-xs font-semibold text-indigo-900 dark:text-indigo-200">
                   Resumo-chave para revisão
                 </p>
-                <p className="text-xs text-indigo-800 mt-1 leading-relaxed">
+                <p className="text-xs text-indigo-800 dark:text-indigo-300 mt-1 leading-relaxed">
                   {selectedArticle.keyTakeaway}
                 </p>
               </div>
@@ -541,7 +543,7 @@ export function LibrarySearchView({
                       prev ? { ...prev, bookmarked: !prev.bookmarked } : null,
                     );
                   }}
-                  className="h-11 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-800 flex items-center gap-2"
+                  className="h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2 transition-colors"
                 >
                   <Bookmark
                     className="w-4 h-4"
@@ -577,13 +579,13 @@ export function LibrarySearchView({
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-xs font-medium text-indigo-700">
+                  <p className="text-xs font-medium text-indigo-700 dark:text-indigo-300">
                     {selectedOpportunity.type} · {selectedOpportunity.organization}
                   </p>
-                  <h2 className="font-display font-bold text-xl text-slate-900 mt-1">
+                  <h2 className="font-display font-bold text-xl text-slate-900 dark:text-slate-100 mt-1">
                     {selectedOpportunity.title}
                   </h2>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                     {selectedOpportunity.modality} · Prazo: {selectedOpportunity.deadline}
                   </p>
                 </div>
@@ -591,21 +593,21 @@ export function LibrarySearchView({
                   type="button"
                   onClick={() => setSelectedOpportunity(null)}
                   aria-label="Fechar detalhes da oportunidade"
-                  className="min-w-[44px] min-h-[44px] -mr-2 -mt-2 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100"
+                  className="min-w-[44px] min-h-[44px] -mr-2 -mt-2 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <p className="text-sm text-slate-700 leading-relaxed">
+              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                 {selectedOpportunity.description}
               </p>
 
               <div className="space-y-2">
-                <h3 className="text-xs font-semibold text-slate-900">
+                <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100">
                   Requisitos principais
                 </h3>
-                <ul className="space-y-1.5 text-xs text-slate-700 list-disc pl-4">
+                <ul className="space-y-1.5 text-xs text-slate-700 dark:text-slate-300 list-disc pl-4">
                   {selectedOpportunity.requirements.map((req, i) => (
                     <li key={i}>{req}</li>
                   ))}
@@ -622,7 +624,7 @@ export function LibrarySearchView({
                     );
                   }}
                   disabled={selectedOpportunity.applied}
-                  className="h-11 px-5 rounded-xl bg-[#0A0F44] hover:bg-[#141B66] disabled:bg-emerald-600 text-white text-xs font-semibold flex items-center gap-2 transition-colors"
+                  className="h-11 px-5 rounded-xl bg-[#0A0F44] dark:bg-indigo-500 hover:bg-[#141B66] dark:hover:bg-indigo-400 disabled:bg-emerald-600 text-white text-xs font-semibold flex items-center gap-2 transition-colors"
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <span>

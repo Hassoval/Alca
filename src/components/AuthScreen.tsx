@@ -20,8 +20,11 @@ import {
   validateSignupCredentials,
 } from '../utils/alcaLogic';
 import { AlcaLogo } from './AlcaLogo';
+import { ThemeToggle } from './ThemeToggle';
 
 interface AuthScreenProps {
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
   onAuthenticated: (user: UserProfile) => void;
 }
 
@@ -51,7 +54,11 @@ const ROLE_META: Record<
   },
 };
 
-export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
+export function AuthScreen({
+  theme,
+  onToggleTheme,
+  onAuthenticated,
+}: AuthScreenProps) {
   const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login');
   const [fullName, setFullName] = useState('');
   const [identifier, setIdentifier] = useState(DEMO_ACCOUNTS[0].email);
@@ -129,27 +136,32 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#F5F7FD] flex items-center justify-center p-0 sm:p-6 lg:p-10 relative overflow-hidden">
+    <div className="min-h-screen w-full bg-[#F5F7FD] dark:bg-[#0B1021] flex items-center justify-center p-0 sm:p-6 lg:p-10 relative overflow-hidden transition-colors duration-300">
       {/* Gentle ambient calm aura */}
       <div
-        className="pointer-events-none absolute -top-32 -left-24 w-96 h-96 rounded-full bg-indigo-200/45 blur-3xl"
+        className="pointer-events-none absolute -top-32 -left-24 w-96 h-96 rounded-full bg-indigo-200/45 dark:bg-indigo-600/20 blur-3xl transition-colors duration-300"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute -bottom-32 -right-24 w-96 h-96 rounded-full bg-sky-200/45 blur-3xl"
+        className="pointer-events-none absolute -bottom-32 -right-24 w-96 h-96 rounded-full bg-sky-200/45 dark:bg-sky-600/15 blur-3xl transition-colors duration-300"
         aria-hidden="true"
       />
 
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 bg-white/85 backdrop-blur-2xl sm:rounded-[32px] sm:border sm:border-white sm:shadow-[0_24px_80px_-20px_rgba(30,27,75,0.18)] overflow-hidden min-h-screen sm:min-h-[700px]">
-        {/* Left / Top curved wave hero matching Screen 1 of the Figma prototype */}
-        <div className="lg:col-span-5 relative bg-gradient-to-br from-[#6366F1] via-[#312E81] to-[#0A0F44] text-white px-7 pt-10 pb-14 sm:px-10 lg:py-12 flex flex-col justify-between overflow-hidden">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 bg-white/85 dark:bg-slate-900/80 backdrop-blur-2xl sm:rounded-[32px] sm:border sm:border-white dark:sm:border-slate-700/60 sm:shadow-[0_24px_80px_-20px_rgba(30,27,75,0.18)] dark:sm:shadow-[0_24px_80px_-20px_rgba(2,6,23,0.75)] overflow-hidden min-h-screen sm:min-h-[700px] transition-colors duration-300">
+        {/* Left / Top curved wave hero */}
+        <div className="lg:col-span-5 relative bg-gradient-to-br from-[#6366F1] via-[#312E81] to-[#0A0F44] dark:from-[#4338CA] dark:via-[#1E1B4B] dark:to-[#070B1E] text-white px-7 pt-10 pb-14 sm:px-10 lg:py-12 flex flex-col justify-between overflow-hidden">
           <div
             className="pointer-events-none absolute top-0 right-0 w-72 h-72 rounded-full bg-indigo-400/20 blur-2xl -translate-y-1/3 translate-x-1/3"
             aria-hidden="true"
           />
 
           <div className="relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <AlcaLogo tone="light" size="lg" />
+            <div className="w-full flex items-center justify-between">
+              <AlcaLogo tone="light" size="lg" />
+              <div className="lg:hidden">
+                <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+              </div>
+            </div>
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -220,11 +232,11 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             </div>
           </div>
 
-          {/* Organic curved wave bottom transition on mobile (matches Figma Screen 1) */}
+          {/* Organic curved wave bottom transition on mobile */}
           <svg
             viewBox="0 0 1440 120"
             preserveAspectRatio="none"
-            className="lg:hidden absolute bottom-0 left-0 w-full h-11 text-white"
+            className="lg:hidden absolute bottom-0 left-0 w-full h-11 text-white dark:text-slate-900 transition-colors duration-300"
             aria-hidden="true"
           >
             <path
@@ -235,8 +247,12 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
         </div>
 
         {/* Right / Bottom Form Card */}
-        <div className="lg:col-span-7 bg-white px-6 py-8 sm:px-12 sm:py-12 flex flex-col justify-center">
-          <div className="w-full max-w-md mx-auto">
+        <div className="lg:col-span-7 bg-white dark:bg-slate-900/95 px-6 py-8 sm:px-12 sm:py-10 flex flex-col justify-between transition-colors duration-300">
+          <div className="hidden lg:flex justify-end">
+            <ThemeToggle theme={theme} onToggle={onToggleTheme} showLabel />
+          </div>
+
+          <div className="w-full max-w-md mx-auto my-auto">
             <AnimatePresence mode="wait">
               <motion.form
                 key={mode}
@@ -252,7 +268,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                   <div>
                     <label
                       htmlFor="auth-fullname"
-                      className="block text-xs font-medium text-slate-600 mb-1.5"
+                      className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
                     >
                       Nome completo
                     </label>
@@ -267,7 +283,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         placeholder="Ex: Maria José Eduardo"
-                        className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-200 bg-slate-50/60 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all"
+                        className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/80 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all"
                       />
                     </div>
                   </div>
@@ -276,7 +292,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                 <div>
                   <label
                     htmlFor="auth-identifier"
-                    className="block text-xs font-medium text-slate-600 mb-1.5"
+                    className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
                   >
                     E-mail ou Número de Telefone
                   </label>
@@ -291,7 +307,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                       value={identifier}
                       onChange={(e) => setIdentifier(e.target.value)}
                       placeholder="E-mail ou Número de Telefone"
-                      className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-200 bg-slate-50/60 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all"
+                      className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/80 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all"
                     />
                   </div>
                 </div>
@@ -300,7 +316,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                   <div>
                     <label
                       htmlFor="auth-password"
-                      className="block text-xs font-medium text-slate-600 mb-1.5"
+                      className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
                     >
                       Password
                     </label>
@@ -315,7 +331,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Password"
-                        className="w-full h-12 pl-10 pr-12 rounded-xl border border-slate-200 bg-slate-50/60 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all"
+                        className="w-full h-12 pl-10 pr-12 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/80 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all"
                       />
                       <button
                         type="button"
@@ -325,7 +341,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                             ? 'Ocultar password'
                             : 'Mostrar password'
                         }
-                        className="absolute right-1.5 top-1/2 -translate-y-1/2 min-w-[40px] min-h-[40px] flex items-center justify-center text-slate-400 hover:text-slate-700 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        className="absolute right-1.5 top-1/2 -translate-y-1/2 min-w-[40px] min-h-[40px] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                       >
                         {showPassword ? (
                           <EyeOff className="w-4 h-4" />
@@ -346,7 +362,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                         setRecoverySent(false);
                         setMode('forgot');
                       }}
-                      className="text-xs font-medium text-indigo-700 hover:text-indigo-900 py-1 px-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                      className="text-xs font-medium text-indigo-700 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-indigo-200 py-1 px-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                     >
                       Esqueceste a Password?
                     </button>
@@ -356,7 +372,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                 {errorMsg && (
                   <p
                     role="alert"
-                    className="text-xs font-medium text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3.5 py-2.5"
+                    className="text-xs font-medium text-rose-600 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/60 rounded-xl px-3.5 py-2.5"
                   >
                     {errorMsg}
                   </p>
@@ -365,7 +381,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                 {recoverySent && mode === 'forgot' && (
                   <p
                     role="status"
-                    className="text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2.5"
+                    className="text-xs font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 rounded-xl px-3.5 py-2.5"
                   >
                     Enviámos instruções de recuperação para {identifier}.
                   </p>
@@ -374,7 +390,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-12 rounded-xl bg-[#0A0F44] hover:bg-[#141B66] active:scale-[0.99] text-white font-display font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-950/15 transition-all disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                  className="w-full h-12 rounded-xl bg-[#0A0F44] hover:bg-[#141B66] dark:bg-indigo-500 dark:hover:bg-indigo-400 active:scale-[0.99] text-white font-display font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-950/15 transition-all disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
                 >
                   <span>
                     {isSubmitting
@@ -391,11 +407,11 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                 {mode !== 'forgot' && (
                   <>
                     <div className="relative py-2 flex items-center">
-                      <div className="flex-grow border-t border-slate-200" />
-                      <span className="shrink-0 mx-3 text-xs text-slate-500">
+                      <div className="flex-grow border-t border-slate-200 dark:border-slate-700" />
+                      <span className="shrink-0 mx-3 text-xs text-slate-500 dark:text-slate-400">
                         Ou Iniciar Sessão com
                       </span>
-                      <div className="flex-grow border-t border-slate-200" />
+                      <div className="flex-grow border-t border-slate-200 dark:border-slate-700" />
                     </div>
 
                     <div className="grid grid-cols-3 gap-3">
@@ -403,7 +419,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                         type="button"
                         onClick={() => handleInstantDemoLogin(DEMO_ACCOUNTS[0])}
                         aria-label="Entrar com Google"
-                        className="h-12 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center text-sm font-semibold text-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        className="h-12 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                       >
                         <span className="text-base font-bold text-[#EA4335]">G</span>
                       </button>
@@ -411,7 +427,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                         type="button"
                         onClick={() => handleInstantDemoLogin(DEMO_ACCOUNTS[0])}
                         aria-label="Entrar com Apple"
-                        className="h-12 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center text-sm font-semibold text-slate-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        className="h-12 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center text-sm font-semibold text-slate-900 dark:text-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                       >
                         Apple
                       </button>
@@ -419,7 +435,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                         type="button"
                         onClick={() => handleInstantDemoLogin(DEMO_ACCOUNTS[0])}
                         aria-label="Entrar com Facebook"
-                        className="h-12 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center text-sm font-bold text-[#1877F2] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        className="h-12 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center text-sm font-bold text-[#1877F2] dark:text-sky-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                       >
                         f
                       </button>
@@ -429,7 +445,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
               </motion.form>
             </AnimatePresence>
 
-            <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between gap-3 text-xs text-slate-600">
+            <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 text-xs text-slate-600 dark:text-slate-400">
               {mode === 'login' ? (
                 <p>
                   Não tens uma conta?{' '}
@@ -439,7 +455,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                       setErrorMsg('');
                       setMode('signup');
                     }}
-                    className="font-semibold text-indigo-700 hover:text-indigo-900 underline-offset-2 hover:underline"
+                    className="font-semibold text-indigo-700 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-indigo-200 underline-offset-2 hover:underline"
                   >
                     Criar conta
                   </button>
@@ -453,17 +469,19 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                       setErrorMsg('');
                       setMode('login');
                     }}
-                    className="font-semibold text-indigo-700 hover:text-indigo-900 underline-offset-2 hover:underline"
+                    className="font-semibold text-indigo-700 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-indigo-200 underline-offset-2 hover:underline"
                   >
                     Fazer Login
                   </button>
                 </p>
               )}
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-slate-400 dark:text-slate-500">
                 4 níveis RBAC ativos
               </span>
             </div>
           </div>
+
+          <div className="hidden lg:block h-4" aria-hidden="true" />
         </div>
       </div>
     </div>

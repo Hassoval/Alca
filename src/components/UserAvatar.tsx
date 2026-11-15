@@ -31,7 +31,7 @@ export function UserAvatar({
 
   return (
     <div
-      className={`relative rounded-full overflow-hidden shrink-0 flex items-center justify-center font-display font-semibold bg-gradient-to-br from-indigo-100 via-slate-100 to-sky-100 text-indigo-900 border border-white/80 shadow-xs ${sizeMap[size]} ${className}`}
+      className={`relative rounded-full overflow-hidden shrink-0 flex items-center justify-center font-display font-semibold bg-gradient-to-br from-indigo-100 via-slate-100 to-sky-100 dark:from-indigo-950 dark:via-slate-800 dark:to-slate-900 text-indigo-900 dark:text-indigo-100 border border-white/80 dark:border-slate-700/80 shadow-xs transition-colors duration-300 ${sizeMap[size]} ${className}`}
     >
       {src ? (
         <img

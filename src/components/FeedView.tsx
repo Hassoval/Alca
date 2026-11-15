@@ -28,6 +28,7 @@ import type {
 } from '../types/alca';
 import { filterUnifiedFeed, getRolePermissions } from '../utils/alcaLogic';
 import { AlcaLogo } from './AlcaLogo';
+import { ThemeToggle } from './ThemeToggle';
 import { UserAvatar } from './UserAvatar';
 import { StoriesStrip } from './StoriesStrip';
 import { MEDIA_ASSETS } from '../utils/mediaAssets';
@@ -39,6 +40,8 @@ interface FeedViewProps {
   opportunities: OpportunityItem[];
   notifications: NotificationItem[];
   hasMoreItems: boolean;
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
   onLoadMore: () => void;
   onOpenSearch: (initialQuery?: string) => void;
   onOpenOpportunities: () => void;
@@ -79,6 +82,8 @@ export function FeedView({
   opportunities,
   notifications,
   hasMoreItems,
+  theme,
+  onToggleTheme,
   onLoadMore,
   onOpenSearch,
   onOpenOpportunities,
@@ -178,30 +183,35 @@ export function FeedView({
 
   return (
     <div className="space-y-5 pb-24 lg:pb-10">
-      {/* Screen 2 / 3 Soft Periwinkle-to-Porcelain Glass Header */}
-      <header className="relative rounded-3xl bg-gradient-to-b from-[#C7D2FE]/85 via-[#E0E7FF]/70 to-white/90 backdrop-blur-xl border border-white/80 shadow-[0_12px_36px_-16px_rgba(79,70,229,0.22)] px-4 pt-4 pb-5 sm:px-6 sm:pt-5">
+      {/* Screen 2 / 3 Soft Periwinkle-to-Porcelain / Midnight Indigo Glass Header */}
+      <header className="relative rounded-3xl bg-gradient-to-b from-[#C7D2FE]/85 via-[#E0E7FF]/70 to-white/90 dark:from-indigo-950/85 dark:via-slate-900/80 dark:to-slate-900/90 backdrop-blur-xl border border-white/80 dark:border-slate-700/60 shadow-[0_12px_36px_-16px_rgba(79,70,229,0.22)] dark:shadow-[0_14px_40px_-14px_rgba(2,6,23,0.7)] px-4 pt-4 pb-5 sm:px-6 sm:pt-5 transition-colors duration-300">
         <div className="flex items-center justify-between gap-3">
           <div className="lg:hidden">
-            <AlcaLogo tone="dark" size="sm" />
+            <AlcaLogo tone="auto" size="sm" />
           </div>
           <div className="hidden lg:block">
-            <p className="text-xs font-medium text-indigo-800/85">
+            <p className="text-xs font-medium text-indigo-800/85 dark:text-indigo-200/85">
               Nível de acesso: {perms.roleLabel}
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setShowNotifications((prev) => !prev)}
-            aria-label={`Notificações (${unreadNotifCount} por ler)`}
-            aria-expanded={showNotifications}
-            className="relative min-w-[44px] min-h-[44px] rounded-full bg-white/85 hover:bg-white flex items-center justify-center text-slate-800 border border-white shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          >
-            <Bell className="w-5 h-5" />
-            {unreadNotifCount > 0 && (
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-indigo-600 ring-2 ring-white" />
-            )}
-          </button>
+          <div className="flex items-center gap-2">
+            <div className="lg:hidden">
+              <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowNotifications((prev) => !prev)}
+              aria-label={`Notificações (${unreadNotifCount} por ler)`}
+              aria-expanded={showNotifications}
+              className="relative min-w-[44px] min-h-[44px] rounded-full bg-white/85 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 flex items-center justify-center text-slate-800 dark:text-slate-100 border border-white dark:border-slate-700/80 shadow-xs transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            >
+              <Bell className="w-5 h-5" />
+              {unreadNotifCount > 0 && (
+                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400 ring-2 ring-white dark:ring-slate-800" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* User Row */}
@@ -213,10 +223,10 @@ export function FeedView({
             size="md"
           />
           <div className="min-w-0">
-            <h1 className="font-display font-bold text-sm sm:text-base text-slate-900 tracking-tight truncate">
+            <h1 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 tracking-tight truncate">
               {user.name}
             </h1>
-            <p className="text-xs text-slate-600 truncate">
+            <p className="text-xs text-slate-600 dark:text-slate-400 truncate">
               {perms.roleLabel} · {user.course}
             </p>
           </div>
@@ -227,9 +237,9 @@ export function FeedView({
           <button
             type="button"
             onClick={() => onOpenSearch('')}
-            className="w-full h-11 px-4 rounded-2xl bg-white/85 hover:bg-white border border-indigo-200/70 shadow-xs flex items-center gap-3 text-left text-sm text-slate-500 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            className="w-full h-11 px-4 rounded-2xl bg-white/85 dark:bg-slate-800/75 hover:bg-white dark:hover:bg-slate-800 border border-indigo-200/70 dark:border-slate-700/80 shadow-xs flex items-center gap-3 text-left text-sm text-slate-500 dark:text-slate-400 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           >
-            <Search className="w-4 h-4 text-indigo-600 shrink-0" aria-hidden="true" />
+            <Search className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" aria-hidden="true" />
             <span className="truncate">
               O que há de Programação, Redes ou Bolsas?
             </span>
@@ -254,13 +264,13 @@ export function FeedView({
                   size="sm"
                 />
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-slate-900">
+                  <p className="text-xs font-semibold text-slate-900 dark:text-slate-100">
                     {activeNotification.actorName}{' '}
-                    <span className="font-normal text-slate-600">
+                    <span className="font-normal text-slate-600 dark:text-slate-400">
                       · {activeNotification.actionText}
                     </span>
                   </p>
-                  <p className="text-xs text-slate-600 mt-0.5 line-clamp-2">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 line-clamp-2">
                     {activeNotification.previewText}
                   </p>
                 </div>
@@ -269,7 +279,7 @@ export function FeedView({
                 type="button"
                 onClick={() => onDismissNotification(activeNotification.id)}
                 aria-label="Dispensar notificação"
-                className="min-w-[36px] min-h-[36px] -mr-1 -mt-1 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors shrink-0"
+                className="min-w-[36px] min-h-[36px] -mr-1 -mt-1 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -291,15 +301,15 @@ export function FeedView({
         className="glass-surface rounded-3xl p-4 sm:p-5 space-y-3"
       >
         {(perms.canPublishAnnouncement || perms.canPublishOpportunity) && (
-          <div className="flex flex-wrap items-center gap-1.5 pb-1 border-b border-slate-100">
+          <div className="flex flex-wrap items-center gap-1.5 pb-1 border-b border-slate-100 dark:border-slate-800">
             {perms.canPublishStudentPost && (
               <button
                 type="button"
                 onClick={() => setComposerKind('estudante')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${
                   composerKind === 'estudante'
-                    ? 'bg-[#0A0F44] text-white'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-[#0A0F44] dark:bg-indigo-500 text-white'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 Partilha
@@ -311,8 +321,8 @@ export function FeedView({
                 onClick={() => setComposerKind('anuncio')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors ${
                   composerKind === 'anuncio'
-                    ? 'bg-[#0A0F44] text-white'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-[#0A0F44] dark:bg-indigo-500 text-white'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 <Megaphone className="w-3.5 h-3.5" aria-hidden="true" />
@@ -325,8 +335,8 @@ export function FeedView({
                 onClick={() => setComposerKind('oportunidade')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors ${
                   composerKind === 'oportunidade'
-                    ? 'bg-[#0A0F44] text-white'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-[#0A0F44] dark:bg-indigo-500 text-white'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 <Briefcase className="w-3.5 h-3.5" aria-hidden="true" />
@@ -344,7 +354,7 @@ export function FeedView({
               onChange={(e) => setOppTitle(e.target.value)}
               placeholder="Título da bolsa ou estágio"
               aria-label="Título da bolsa ou estágio"
-              className="sm:col-span-2 h-10 px-3 rounded-xl border border-slate-200 bg-white/90 text-xs text-slate-900 focus:outline-none focus:border-indigo-500"
+              className="sm:col-span-2 h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/80 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
             />
             <div className="flex items-center gap-1.5">
               <button
@@ -352,8 +362,8 @@ export function FeedView({
                 onClick={() => setOppType('Bolsas')}
                 className={`flex-1 h-10 rounded-xl text-xs font-medium border transition-colors ${
                   oppType === 'Bolsas'
-                    ? 'bg-indigo-50 border-indigo-300 text-indigo-800'
-                    : 'bg-white border-slate-200 text-slate-600'
+                    ? 'bg-indigo-50 dark:bg-indigo-500/20 border-indigo-300 dark:border-indigo-500/40 text-indigo-800 dark:text-indigo-200'
+                    : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300'
                 }`}
               >
                 Bolsa
@@ -363,8 +373,8 @@ export function FeedView({
                 onClick={() => setOppType('Estágios')}
                 className={`flex-1 h-10 rounded-xl text-xs font-medium border transition-colors ${
                   oppType === 'Estágios'
-                    ? 'bg-indigo-50 border-indigo-300 text-indigo-800'
-                    : 'bg-white border-slate-200 text-slate-600'
+                    ? 'bg-indigo-50 dark:bg-indigo-500/20 border-indigo-300 dark:border-indigo-500/40 text-indigo-800 dark:text-indigo-200'
+                    : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300'
                 }`}
               >
                 Estágio
@@ -376,7 +386,7 @@ export function FeedView({
               onChange={(e) => setOppDeadline(e.target.value)}
               placeholder="Prazo (ex: 20 Dez 2026)"
               aria-label="Prazo da oportunidade"
-              className="sm:col-span-3 h-10 px-3 rounded-xl border border-slate-200 bg-white/90 text-xs text-slate-900 focus:outline-none focus:border-indigo-500"
+              className="sm:col-span-3 h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/80 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
         )}
@@ -404,7 +414,7 @@ export function FeedView({
                     ? 'Descreve os benefícios e critérios desta bolsa ou estágio...'
                     : 'Partilha um resumo, dúvida de disciplina ou dica de estudo...'
               }
-              className="w-full bg-white/75 hover:bg-white focus:bg-white rounded-2xl px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 border border-slate-200/80 focus:outline-none focus:border-indigo-500 transition-colors resize-none"
+              className="w-full bg-white/75 dark:bg-slate-800/75 hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 rounded-2xl px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 border border-slate-200/80 dark:border-slate-700/80 focus:outline-none focus:border-indigo-500 transition-colors duration-300 resize-none"
             />
           </div>
         </div>
@@ -423,8 +433,8 @@ export function FeedView({
                   onClick={() => setComposerCategory(cat.value)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
                     composerCategory === cat.value
-                      ? 'bg-indigo-50 text-indigo-800 border border-indigo-200'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'bg-indigo-50 dark:bg-indigo-500/20 text-indigo-800 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-500/40'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   {cat.label}
@@ -432,7 +442,7 @@ export function FeedView({
               ))}
             </div>
           ) : (
-            <span className="text-xs text-indigo-700 font-medium">
+            <span className="text-xs text-indigo-700 dark:text-indigo-300 font-medium">
               {composerKind === 'anuncio'
                 ? 'Será fixado como Anúncio Oficial no feed'
                 : 'Será publicado no feed e na Biblioteca'}
@@ -442,7 +452,7 @@ export function FeedView({
           <button
             type="submit"
             disabled={!composerText.trim()}
-            className="h-10 px-4 rounded-xl bg-[#0A0F44] hover:bg-[#141B66] disabled:opacity-45 text-white text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0"
+            className="h-10 px-4 rounded-xl bg-[#0A0F44] dark:bg-indigo-500 hover:bg-[#141B66] dark:hover:bg-indigo-400 disabled:opacity-45 text-white text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0"
           >
             <Send className="w-3.5 h-3.5" aria-hidden="true" />
             <span>
@@ -471,8 +481,8 @@ export function FeedView({
               aria-pressed={active}
               className={`flex-1 min-h-[40px] px-3 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
                 active
-                  ? 'bg-[#0A0F44] text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                  ? 'bg-[#0A0F44] dark:bg-indigo-500 text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800/60'
               }`}
             >
               {filter}
@@ -484,7 +494,7 @@ export function FeedView({
       {shareFeedback && (
         <div
           role="status"
-          className="glass-popover rounded-2xl px-4 py-3 text-xs font-medium text-indigo-900"
+          className="glass-popover rounded-2xl px-4 py-3 text-xs font-medium text-indigo-900 dark:text-indigo-200"
         >
           {shareFeedback}
         </div>
@@ -501,9 +511,9 @@ export function FeedView({
 
             const surfaceClass =
               post.kind === 'anuncio'
-                ? 'bg-gradient-to-br from-indigo-50/85 via-white/85 to-white/90 backdrop-blur-xl border border-indigo-200/75 shadow-[0_10px_32px_-12px_rgba(79,70,229,0.14)]'
+                ? 'bg-gradient-to-br from-indigo-50/85 via-white/85 to-white/90 dark:from-indigo-950/60 dark:via-slate-900/80 dark:to-slate-900/90 backdrop-blur-xl border border-indigo-200/75 dark:border-indigo-500/30 shadow-[0_10px_32px_-12px_rgba(79,70,229,0.14)] dark:shadow-[0_14px_38px_-14px_rgba(2,6,23,0.65)] transition-colors duration-300'
                 : post.kind === 'oportunidade'
-                  ? 'bg-gradient-to-br from-sky-50/85 via-white/85 to-white/90 backdrop-blur-xl border border-sky-200/75 shadow-[0_10px_32px_-12px_rgba(14,165,233,0.12)]'
+                  ? 'bg-gradient-to-br from-sky-50/85 via-white/85 to-white/90 dark:from-sky-950/50 dark:via-slate-900/80 dark:to-slate-900/90 backdrop-blur-xl border border-sky-200/75 dark:border-sky-500/30 shadow-[0_10px_32px_-12px_rgba(14,165,233,0.12)] dark:shadow-[0_14px_38px_-14px_rgba(2,6,23,0.65)] transition-colors duration-300'
                   : 'glass-surface';
 
             return (
@@ -525,7 +535,7 @@ export function FeedView({
                   post.kind === 'oportunidade' ||
                   post.pinned) && (
                   <div className="flex items-center justify-between gap-2 text-[11px] font-semibold">
-                    <span className="inline-flex items-center gap-1.5 text-indigo-700">
+                    <span className="inline-flex items-center gap-1.5 text-indigo-700 dark:text-indigo-300">
                       {post.kind === 'anuncio' ? (
                         <Megaphone className="w-3.5 h-3.5" aria-hidden="true" />
                       ) : post.kind === 'oportunidade' ? (
@@ -553,7 +563,7 @@ export function FeedView({
                               ? `Desafixar publicação de ${post.authorName}`
                               : `Fixar publicação de ${post.authorName}`
                           }
-                          className="px-2 py-1 rounded-lg text-[11px] font-medium text-indigo-700 hover:bg-indigo-100/70 transition-colors"
+                          className="px-2 py-1 rounded-lg text-[11px] font-medium text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100/70 dark:hover:bg-indigo-500/20 transition-colors"
                         >
                           {post.pinned ? 'Desafixar' : 'Fixar'}
                         </button>
@@ -561,7 +571,7 @@ export function FeedView({
                           type="button"
                           onClick={() => onDeletePost(post.id)}
                           aria-label={`Moderar e remover publicação de ${post.authorName}`}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -580,10 +590,10 @@ export function FeedView({
                       size="md"
                     />
                     <div className="min-w-0">
-                      <h2 className="text-sm font-display font-semibold text-slate-900 truncate">
+                      <h2 className="text-sm font-display font-semibold text-slate-900 dark:text-slate-100 truncate">
                         {post.authorName}
                       </h2>
-                      <p className="text-xs text-slate-500 truncate">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
                         {post.category} · {post.timestamp}
                       </p>
                     </div>
@@ -600,8 +610,8 @@ export function FeedView({
                     aria-pressed={post.bookmarked}
                     className={`min-w-[44px] min-h-[44px] -mr-2 -mt-1 rounded-full flex items-center justify-center transition-colors ${
                       post.bookmarked
-                        ? 'text-indigo-700 bg-indigo-50'
-                        : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
+                        ? 'text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-500/20'
+                        : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >
                     <Bookmark
@@ -612,18 +622,18 @@ export function FeedView({
                 </div>
 
                 {/* Post Copy */}
-                <p className="text-sm sm:text-[15px] leading-relaxed text-slate-800">
+                <p className="text-sm sm:text-[15px] leading-relaxed text-slate-800 dark:text-slate-200">
                   {post.content}
                 </p>
 
                 {/* Linked Opportunity Action Box inside Feed */}
                 {linkedOpp && (
-                  <div className="rounded-2xl bg-white/85 border border-sky-200/80 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="rounded-2xl bg-white/85 dark:bg-slate-800/80 border border-sky-200/80 dark:border-sky-500/30 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors duration-300">
                     <div className="min-w-0">
-                      <p className="text-xs font-display font-semibold text-slate-900 truncate">
+                      <p className="text-xs font-display font-semibold text-slate-900 dark:text-slate-100 truncate">
                         {linkedOpp.title}
                       </p>
-                      <p className="text-[11px] text-slate-500 mt-0.5 truncate">
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">
                         {linkedOpp.organization} · {linkedOpp.modality} · Prazo{' '}
                         {linkedOpp.deadline}
                       </p>
@@ -632,7 +642,7 @@ export function FeedView({
                       <button
                         type="button"
                         onClick={onOpenOpportunities}
-                        className="h-9 px-3 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap"
+                        className="h-9 px-3 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/70 transition-colors whitespace-nowrap"
                       >
                         Ver detalhes
                       </button>
@@ -642,8 +652,8 @@ export function FeedView({
                         disabled={linkedOpp.applied}
                         className={`h-9 px-3.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap ${
                           linkedOpp.applied
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                            : 'bg-[#0A0F44] hover:bg-[#141B66] text-white'
+                            ? 'bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30'
+                            : 'bg-[#0A0F44] dark:bg-indigo-500 hover:bg-[#141B66] dark:hover:bg-indigo-400 text-white'
                         }`}
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
@@ -657,7 +667,7 @@ export function FeedView({
 
                 {/* Post Media */}
                 {post.mediaKey && (
-                  <div className="relative rounded-2xl overflow-hidden border border-slate-200/70 bg-slate-100 group">
+                  <div className="relative rounded-2xl overflow-hidden border border-slate-200/70 dark:border-slate-700/70 bg-slate-100 dark:bg-slate-800 group">
                     <img
                       src={MEDIA_ASSETS[post.mediaKey]}
                       alt={
@@ -687,7 +697,7 @@ export function FeedView({
                             })
                           }
                           aria-label="Expandir mapa de estudo"
-                          className="min-w-[44px] min-h-[44px] px-3 rounded-xl bg-white/90 hover:bg-white text-slate-900 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors"
+                          className="min-w-[44px] min-h-[44px] px-3 rounded-xl bg-white/90 dark:bg-slate-900/90 hover:bg-white dark:hover:bg-slate-900 text-slate-900 dark:text-slate-100 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors"
                         >
                           <Maximize2 className="w-3.5 h-3.5" aria-hidden="true" />
                           <span>Expandir</span>
@@ -698,7 +708,7 @@ export function FeedView({
                 )}
 
                 {/* Actions Row */}
-                <div className="pt-1 border-t border-slate-100/90 flex items-center justify-between gap-2">
+                <div className="pt-1 border-t border-slate-100/90 dark:border-slate-800 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1 sm:gap-2">
                     <button
                       type="button"
@@ -707,8 +717,8 @@ export function FeedView({
                       aria-pressed={post.likedByMe}
                       className={`min-h-[44px] px-3 rounded-xl flex items-center gap-1.5 text-xs font-medium tabular-nums transition-colors ${
                         post.likedByMe
-                          ? 'text-rose-600 bg-rose-50/80'
-                          : 'text-slate-600 hover:bg-slate-100'
+                          ? 'text-rose-600 dark:text-rose-400 bg-rose-50/80 dark:bg-rose-500/15'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
                       <Heart
@@ -727,7 +737,7 @@ export function FeedView({
                       }
                       aria-label={`Comentar publicação de ${post.authorName}`}
                       aria-expanded={isCommentsOpen}
-                      className="min-h-[44px] px-3 rounded-xl flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 tabular-nums transition-colors"
+                      className="min-h-[44px] px-3 rounded-xl flex items-center gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 tabular-nums transition-colors"
                     >
                       <MessageCircle className="w-4 h-4" />
                       <span>{post.comments.length}</span>
@@ -737,14 +747,14 @@ export function FeedView({
                       type="button"
                       onClick={() => handleShare(post)}
                       aria-label={`Partilhar publicação de ${post.authorName} no Chat`}
-                      className="min-h-[44px] px-3 rounded-xl flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 tabular-nums transition-colors"
+                      className="min-h-[44px] px-3 rounded-xl flex items-center gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 tabular-nums transition-colors"
                     >
                       <Share2 className="w-4 h-4" />
                       <span>{post.shares}</span>
                     </button>
                   </div>
 
-                  <span className="text-xs text-slate-400 hidden sm:inline truncate">
+                  <span className="text-xs text-slate-400 dark:text-slate-500 hidden sm:inline truncate">
                     {post.authorCourse}
                   </span>
                 </div>
@@ -763,22 +773,22 @@ export function FeedView({
                           {post.comments.map((c) => (
                             <li
                               key={c.id}
-                              className="rounded-2xl bg-slate-50/90 px-3.5 py-2.5 text-xs"
+                              className="rounded-2xl bg-slate-50/90 dark:bg-slate-800/80 px-3.5 py-2.5 text-xs transition-colors"
                             >
                               <div className="flex items-center justify-between gap-2">
-                                <span className="font-semibold text-slate-900">
+                                <span className="font-semibold text-slate-900 dark:text-slate-100">
                                   {c.authorName}
                                 </span>
-                                <span className="text-slate-400">{c.timestamp}</span>
+                                <span className="text-slate-400 dark:text-slate-500">{c.timestamp}</span>
                               </div>
-                              <p className="text-slate-700 mt-1 leading-relaxed">
+                              <p className="text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
                                 {c.text}
                               </p>
                             </li>
                           ))}
                         </ul>
                       ) : (
-                        <p className="text-xs text-slate-500 px-1">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 px-1">
                           Ainda sem comentários. Sê o primeiro a contribuir!
                         </p>
                       )}
@@ -801,11 +811,11 @@ export function FeedView({
                             }))
                           }
                           placeholder="Adicionar comentário construtivo..."
-                          className="flex-1 h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-indigo-500"
+                          className="flex-1 h-11 px-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
                         />
                         <button
                           type="submit"
-                          className="h-11 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition-colors whitespace-nowrap"
+                          className="h-11 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white text-xs font-semibold transition-colors whitespace-nowrap"
                         >
                           Enviar
                         </button>
@@ -838,9 +848,9 @@ export function FeedView({
             <button
               type="button"
               onClick={handleTriggerLoadMore}
-              className="w-full h-12 glass-surface hover:bg-white/95 rounded-2xl text-xs font-display font-semibold text-indigo-900 flex items-center justify-center gap-2 transition-all"
+              className="w-full h-12 glass-surface hover:bg-white/95 dark:hover:bg-slate-800/85 rounded-2xl text-xs font-display font-semibold text-indigo-900 dark:text-indigo-200 flex items-center justify-center gap-2 transition-all"
             >
-              <RefreshCw className="w-4 h-4 text-indigo-600" aria-hidden="true" />
+              <RefreshCw className="w-4 h-4 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
               <span>Carregar mais anúncios e oportunidades</span>
             </button>
           )}
@@ -859,16 +869,16 @@ export function FeedView({
             aria-modal="true"
             aria-label={expandedImage.title}
           >
-            <div className="relative w-full max-w-2xl rounded-3xl overflow-hidden bg-white shadow-2xl">
-              <div className="px-5 py-3.5 flex items-center justify-between border-b border-slate-100">
-                <p className="font-display font-semibold text-sm text-slate-900">
+            <div className="relative w-full max-w-2xl rounded-3xl overflow-hidden bg-white dark:bg-slate-900 border border-white/10 shadow-2xl transition-colors duration-300">
+              <div className="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+                <p className="font-display font-semibold text-sm text-slate-900 dark:text-slate-100">
                   {expandedImage.title}
                 </p>
                 <button
                   type="button"
                   onClick={() => setExpandedImage(null)}
                   aria-label="Fechar imagem expandida"
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-600"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -877,7 +887,7 @@ export function FeedView({
                 src={expandedImage.src}
                 alt={expandedImage.title}
                 referrerPolicy="no-referrer"
-                className="w-full max-h-[75vh] object-contain bg-slate-50"
+                className="w-full max-h-[75vh] object-contain bg-slate-50 dark:bg-slate-950"
               />
             </div>
           </motion.div>
